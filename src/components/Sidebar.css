@@ -1,0 +1,46 @@
+.sidebar {
+  width: 200px;
+  padding: 10px;
+  background-color: #F1F8E9; /* Light green for sidebar background */
+  height: calc(100vh - 80px); /* Adjust for header height */
+  position: fixed;
+  top: 80px; /* Adjust for header height */
+  left: 0;
+  overflow-y: auto;
+  border-right: 1px solid #8BC34A; /* Green border */
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  cursor: pointer;
+  user-select: none;
+  color: #388E3C; /* Darker green for header text */
+}
+
+.expandable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expandable-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.sidebar form {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar form div {
+  margin-bottom: 10px;
+}
+
+.sidebar input[type="radio"] {
+  margin-right: 10px;
+}
+
+.sidebar label {
+  color: #4CAF50; /* Green for labels */
+}
