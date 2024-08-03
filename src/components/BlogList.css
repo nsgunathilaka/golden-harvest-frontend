@@ -81,3 +81,36 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* BlogList.css */
+
+.blog-list-container {
+  position: relative; /* Ensure it's not affecting other elements */
+}
+
+.toast {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1rem; /* Adjust as needed */
+  z-index: 9999; /* Ensure it's on top of other elements */
+}
+
+/* Adjust styles if needed */
+.toast .inline-flex {
+  display: flex;
+  align-items: center;
+}
+
+.toast .ml-3 {
+  margin-left: 0.75rem;
+}
+
+.no-blogs-banner {
+  padding: 1rem;
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  border: 1px solid #f5c6cb; /* Light red border */
+  border-radius: 0.25rem;
+}
