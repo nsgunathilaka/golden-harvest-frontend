@@ -9,21 +9,28 @@ import './App.css';
 
 function App() {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedCenter, setSelectedCenter] = useState(null);
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   return (
     <Router>
       <div className="App">
         <Header />
         <div className="content">
-          <Sidebar selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict} />
+          <Sidebar
+            selectedDistrict={selectedDistrict}
+            setSelectedDistrict={setSelectedDistrict}
+            selectedCenter={selectedCenter}
+            setSelectedCenter={setSelectedCenter}
+          />
           <div className="main-content">
             <CarouselBanner />
-            <div class="text-center mt-3">
-            <span class="section-topic">Vegetable Crop Blogs</span>
-            </div>
             <Routes>
-              <Route path="/" element={<BlogList selectedDistrict={selectedDistrict} />} />
-              <Route path="/blog/:id" element={<BlogDetails />} />
+              <Route
+                path="/"
+                element={<BlogList selectedDistrict={selectedDistrict} selectedCenter={selectedCenter} setSelectedBlog={setSelectedBlog} />}
+              />
+              <Route path="/blog/:id/:type" element={<BlogDetails blog={selectedBlog} />} />
             </Routes>
           </div>
         </div>

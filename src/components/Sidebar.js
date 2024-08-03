@@ -1,27 +1,33 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ selectedDistrict, setSelectedDistrict }) => {
+const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSelectedCenter }) => {
   const [districts, setDistricts] = useState([]);
-  const [selectedCenter, setSelectedCenter] = useState(null); // New state for selected center
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [loading, setLoading] = useState(true); // State for loading
   const contentRef = useRef(null);
-  const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/api/districtlist/')
-      .then(response => {
+    const fetchDistricts = async () => {
+      setLoading(true); // Set loading to true before fetching
+      setError(null); // Reset the error state
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/api/districtlist/');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
-      })
-      .then(data => setDistricts(data))
-      .catch(error => {
+        const data = await response.json();
+        setDistricts(data);
+      } catch (error) {
         console.error('Error fetching districts:', error);
         setError(error.toString());
-      });
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchDistricts();
   }, []);
 
   const toggleExpand = () => {
@@ -30,28 +36,16 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict }) => {
 
   const handleDistrictChange = (districtId) => {
     setSelectedDistrict(districtId);
-    setSelectedCenter(null);
+    setSelectedCenter(null); // Reset center selection when changing district
   };
 
   const handleCenterChange = (centerName) => {
     setSelectedCenter(centerName);
-    var url = 'http://127.0.0.1:8000/api/api/get-centers-crop/'+centerName+'/'
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Center data:', data);
-        setBlogs(data);
-      })
-      .catch(error => {
-        console.error('Error fetching center data:', error);
-        setError(error.toString());
-      });
   };
+
+  if (loading) {
+    return <div className="loader">Loading districts...</div>; // Loader while fetching districts
+  }
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -96,7 +90,7 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict }) => {
                         id={center.name}
                         name="center"
                         value={center.name}
-                        checked={selectedCenter === center.name}
+                        checked={center.name === selectedCenter}
                         onChange={() => handleCenterChange(center.name)}
                       />
                       <label htmlFor={center.name}>{center.name}</label>

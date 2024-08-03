@@ -2,21 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './BlogList.css';
 
-const BlogList = ({ selectedDistrict }) => {
-  const [blogs, setBlogs] = useState([]);
+const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
+  const [vegetableCrops, setVegetableCrops] = useState([]);
+  const [fruitCrops, setFruitCrops] = useState([]);
+  const [paddyCrops, setPaddyCrops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCropDetails, setSelectedCropDetails] = useState(null);
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchCrops = async () => {
       setLoading(true);
-      setError(null); // Reset the error state
+      setError(null);
       try {
-        var url;
-        if(selectedDistrict) {
-            url = 'http://127.0.0.1:8000/api/api/district-data/' + selectedDistrict + '/'
-        }  else {
-            url = 'http://127.0.0.1:8000/api/api/vegetablecrops/'
+        let url;
+        if (selectedCenter) {
+          url = `http://127.0.0.1:8000/api/api/get-centers-crop/${selectedCenter}/`;
+        } else if (selectedDistrict) {
+          url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/`;
+        } else {
+          url = 'http://127.0.0.1:8000/api/api/get-all-crop/';
         }
 
         const response = await fetch(url);
@@ -24,53 +29,113 @@ const BlogList = ({ selectedDistrict }) => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setBlogs(data);
+        setVegetableCrops(data.vegetable_crops || []);
+        setFruitCrops(data.fruit_crops || []);
+        setPaddyCrops(data.paddy_crops || []);
       } catch (error) {
-        console.error('Error fetching blogs:', error.message);
-        setError(error.message); // Update the error state
+        console.error('Error fetching crops:', error.message);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchBlogs();
-  }, [selectedDistrict]);
+    fetchCrops();
+  }, [selectedDistrict, selectedCenter]);
+
+  const handleShowMore = async (cropId, environment) => {
+    try {
+      var url = 'http://127.0.0.1:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const cropDetails = await response.json();
+      setSelectedCropDetails(cropDetails[0]);
+    } catch (error) {
+      console.error('Error fetching crop details:', error.message);
+      setError(error.message);
+    }
+  };
 
   if (loading) {
     return (
       <div className="loader">
         <div className="spinner"></div>
-        <p>Loading blogs...</p>
+        <p>Loading crops...</p>
       </div>
     );
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Display error message if there is an error
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div className="blog-list">
-      {blogs.length === 0 ? (
+      {vegetableCrops.length === 0 && fruitCrops.length === 0 && paddyCrops.length === 0 && (
         <div className="no-blogs-banner">
-          <h2>No Blogs Found</h2>
-          <p>Sorry, there are no blogs available for the selected district.</p>
+          <h2>No Crops Found</h2>
+          <p>Sorry, there are no crops available for the selected filters.</p>
         </div>
-      ) : (
-        blogs.map((blog) => (
-          <div className="blog-item" key={blog.id}>
-            <img src={blog.image_url} alt={blog.title} className="blog-image" />
-            <h3>{blog.title}</h3>
-            <div
-              className="blog-description"
-              dangerouslySetInnerHTML={{ __html: blog.description.slice(0, 100) + '...' }}
-            />
-            <Link to={`/blog/${blog.id}`} className="show-more-button">
-              Show More
-            </Link>
-          </div>
-        ))
       )}
+
+      <div className="section">
+        <h2 className="section-title text-center">Vegetable Crops Information</h2>
+        <div className="grid-container">
+          {vegetableCrops.map(crop => (
+            <div className="grid-item" key={crop.id}>
+              <img src={crop.image_url} alt={crop.title} className="blog-image" />
+              <h3>{crop.title}</h3>
+              <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
+              <Link
+                  to={`/blog/${crop.id}/vegetable`} // Pass the crop ID here
+                  className="show-more-button"
+                >
+                  Show More
+                </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title text-center">Fruit Crops Information</h2>
+        <div className="grid-container">
+          {fruitCrops.map(crop => (
+            <div className="grid-item" key={crop.id}>
+              <img src={crop.image_url} alt={crop.title} className="blog-image" />
+              <h3>{crop.title}</h3>
+              <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
+              <Link
+                  to={`/blog/${crop.id}/fruit`} // Pass the crop ID here
+                  className="show-more-button"
+                >
+                  Show More
+                </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title text-center">Paddy Crops Information</h2>
+        <div className="grid-container">
+          {paddyCrops.map(crop => (
+            <div className="grid-item" key={crop.id}>
+              <img src={crop.image_url} alt={crop.title} className="blog-image" />
+              <h3>{crop.title}</h3>
+              <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
+              <Link
+                  to={`/blog/${crop.id}/paddy`} // Pass the crop ID here
+                  className="show-more-button"
+                >
+                  Show More
+                </Link>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
