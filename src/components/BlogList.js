@@ -87,13 +87,18 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
             <div className="grid-item" key={crop.id}>
               <img src={crop.image_url} alt={crop.title} className="blog-image" />
               <h3>{crop.title}</h3>
+              <p className="created-date-str">Posted on {crop.created_at}</p>
+              <div class="flex gap-2">
+                {(Object.values(crop.centers) || []).map((center, index) => (
+                  <div class="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                    <span class="">{center.center}</span>
+                  </div>
+                ))}
+              </div>
               <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
-              <Link
-                  to={`/blog/${crop.id}/vegetable`} // Pass the crop ID here
-                  className="show-more-button"
-                >
-                  Show More
-                </Link>
+              <Link to={`/blog/${crop.id}/vegetable`} className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Read More
+              </Link>
             </div>
           ))}
         </div>
@@ -106,13 +111,18 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
             <div className="grid-item" key={crop.id}>
               <img src={crop.image_url} alt={crop.title} className="blog-image" />
               <h3>{crop.title}</h3>
+              <p className="created-date-str">Posted on {crop.created_at}</p>
+              <div class="flex gap-2">
+                {(Object.values(crop.centers) || []).map((center, index) => (
+                  <div class="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                    <span class="">{center.center}</span>
+                  </div>
+                ))}
+              </div>
               <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
-              <Link
-                  to={`/blog/${crop.id}/fruit`} // Pass the crop ID here
-                  className="show-more-button"
-                >
-                  Show More
-                </Link>
+              <Link to={`/blog/${crop.id}/fruit`} className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Read More
+              </Link>
             </div>
           ))}
         </div>
@@ -125,13 +135,18 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
             <div className="grid-item" key={crop.id}>
               <img src={crop.image_url} alt={crop.title} className="blog-image" />
               <h3>{crop.title}</h3>
+              <p className="created-date-str">Posted on {crop.created_at}</p>
+              <div class="flex gap-2">
+                {(Object.values(crop.centers) || []).map((center, index) => (
+                  <div class="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                    <span class="">{center.center}</span>
+                  </div>
+                ))}
+              </div>
               <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
-              <Link
-                  to={`/blog/${crop.id}/paddy`} // Pass the crop ID here
-                  className="show-more-button"
-                >
-                  Show More
-                </Link>
+              <Link to={`/blog/${crop.id}/paddy`} className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                Read More
+              </Link>
             </div>
           ))}
         </div>

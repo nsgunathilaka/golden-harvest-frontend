@@ -1,5 +1,5 @@
 // src/services/notificationService.js
-const API_URL = 'http://127.0.0.1:8000/api/notifications/'; // Replace with your API URL
+const API_URL = 'http://127.0.0.1:8000/api/api/get_notification_data/'; // Replace with your API URL
 
 export const fetchNotifications = async () => {
   try {

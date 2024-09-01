@@ -139,7 +139,7 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     padding: 10px;
     gap: 40px;
 }
@@ -154,6 +154,10 @@
     font-size: 30px;
 }
 
+.grid-item h3 {
+    font-size: 23px;
+}
+
 .blog-image {
   width: 100%;
   height: auto;
@@ -164,6 +168,10 @@
 .blog-description {
   font-size: 0.9em;
   color: #666;
+}
+
+.blog-description p {
+    font-size: 16px;
 }
 
 .show-more-button {
@@ -192,4 +200,20 @@
     padding-left: 12px;
     padding-top: 15px;
     margin-bottom: 11px;
+}
+
+.created-date-str {
+    font-size: 14px;
+    color: #b1aeae;
+    padding-left: 4px;
+    padding-bottom: 4px;
+}
+
+.read-more-btn {
+    position: relative;
+    float: right;
+}
+
+.read-more-btn:hover {
+    color: black;
 }

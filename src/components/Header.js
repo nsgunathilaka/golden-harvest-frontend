@@ -6,27 +6,35 @@ const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const [selectedNotification, setSelectedNotification] = useState(null); // New state for selected notification
 
   useEffect(() => {
-    // Function to update notification count
     const updateNotificationCount = async () => {
       const data = await fetchNotifications();
-      setNotificationCount(data.count);
-      setNotifications(data.messages || []);
+      setNotificationCount(data.count || 0);
+      setNotifications(data.notifications || []);
     };
 
-    // Fetch notifications initially
     updateNotificationCount();
-
-    // Set up interval to fetch notifications every minute (60000 milliseconds)
     const intervalId = setInterval(updateNotificationCount, 60000);
 
-    // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
   const handleEnvelopeClick = () => {
     setShowModal(!showModal);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleNotificationClick = (notification) => {
+    setSelectedNotification(notification); // Set the clicked notification as selected
+  };
+
+  const handleClosePopup = () => {
+    setSelectedNotification(null); // Deselect the notification to close the popup
   };
 
   return (
@@ -39,11 +47,17 @@ const Header = () => {
         </div>
         {showModal && (
           <div className="modal">
-            <button className="close-button" onClick={() => setShowModal(false)}>×</button>
+            <button className="close-button" onClick={handleCloseModal}>
+              <i className="fa-solid fa-xmark"></i>
+            </button>
             {notifications.length > 0 ? (
               <ul className="message-list">
-                {notifications.map((msg, index) => (
-                  <li key={index}>{msg}</li>
+                {notifications.map((notification, index) => (
+                  <li key={index} onClick={() => handleNotificationClick(notification)}>
+                    <strong>{notification.title}</strong>
+                    <p>{notification.description}</p>
+                    <small>{notification.created_at}</small>
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -52,6 +66,31 @@ const Header = () => {
           </div>
         )}
       </div>
+
+      {/* Popup for displaying the selected notification */}
+      {selectedNotification && (
+        <div className="notification-popup">
+          <div className="popup-content">
+            <button className="close-popup" onClick={handleClosePopup}>
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+            <h2>{selectedNotification.title}</h2>
+            <div className="flex gap-2">
+              <div
+                className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-blue-500 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                <span>{selectedNotification.district}</span>
+              </div>
+              {selectedNotification.service_centers && (
+                  <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-green-500 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                    <span>{selectedNotification.service_centers}</span>
+                  </div>
+                )}
+            </div>
+            <p>{selectedNotification.description}</p>
+            <small>Posted on: {selectedNotification.created_at}</small>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
