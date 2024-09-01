@@ -13,7 +13,7 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
       setLoading(true); // Set loading to true before fetching
       setError(null); // Reset the error state
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/api/districtlist/');
+        const response = await fetch('http://18.234.244.113:8000/api/api/districtlist/');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
