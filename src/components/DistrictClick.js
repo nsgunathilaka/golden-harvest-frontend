@@ -8,7 +8,7 @@ const BlogPage = () => {
 
   const handleDistrictChange = (districtId) => {
     setSelectedDistrict(districtId);
-    const url = 'http://18.234.244.113:8000/api/api/district-data/' +districtId + '/'
+    const url = 'http://127.0.0.1:8000/api/api/district-data/' +districtId + '/'
     fetch(url)
       .then(response => {
         if (!response.ok) {
