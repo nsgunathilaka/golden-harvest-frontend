@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css';
+import { NavLink } from 'react-router-dom';
 import { fetchNotifications } from '../services/notificationService';
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
-  const [selectedNotification, setSelectedNotification] = useState(null); // New state for selected notification
+  const [selectedNotification, setSelectedNotification] = useState(null);
 
   useEffect(() => {
     const updateNotificationCount = async () => {
@@ -30,16 +31,65 @@ const Header = () => {
   };
 
   const handleNotificationClick = (notification) => {
-    setSelectedNotification(notification); // Set the clicked notification as selected
+    setSelectedNotification(notification);
   };
 
   const handleClosePopup = () => {
-    setSelectedNotification(null); // Deselect the notification to close the popup
+    setSelectedNotification(null);
   };
 
   return (
     <header className="App-header">
+      {/* Logo added to the left side */}
+      <div className="logo-container">
+        <img
+          src="https://golden-harvest-s3.s3.amazonaws.com/logo/golden_harvest_logo.webp"
+          alt="Golden Harvest Logo"
+          className="logo"
+        />
+      </div>
+
       <h1>Golden Harvest</h1>
+
+
+
+      <nav className="nav-menu">
+          <ul>
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/vegetable-crop"
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
+              >
+                Vegetable Crop Info
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/paddy-crop"
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
+              >
+                Paddy Crop Info
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/fruit-crop"
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
+              >
+                Fruit Crop Info
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+
       <div className="message-box" onClick={handleEnvelopeClick}>
         <i className="fa-solid fa-envelope"></i>
         <div className="count">
@@ -77,14 +127,15 @@ const Header = () => {
             <h2>{selectedNotification.title}</h2>
             <div className="flex gap-2">
               <div
-                className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-blue-500 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-blue-500 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white"
+              >
                 <span>{selectedNotification.district}</span>
               </div>
               {selectedNotification.service_centers && (
-                  <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-green-500 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
-                    <span>{selectedNotification.service_centers}</span>
-                  </div>
-                )}
+                <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-green-500 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
+                  <span>{selectedNotification.service_centers}</span>
+                </div>
+              )}
             </div>
             <p>{selectedNotification.description}</p>
             <small>Posted on: {selectedNotification.created_at}</small>
