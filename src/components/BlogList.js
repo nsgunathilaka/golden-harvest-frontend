@@ -45,7 +45,7 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
 
   const handleShowMore = async (cropId, environment) => {
     try {
-      var url = 'http://127.0.0.1:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
+      var url = 'http://18.234.244.113:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -112,15 +112,23 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
               <img src={crop.image_url} alt={crop.title} className="blog-image" />
               <h3>{crop.title}</h3>
               <p className="created-date-str">Posted on {crop.created_at}</p>
-              <div class="flex gap-2">
-                {(Object.values(crop.centers) || []).map((center, index) => (
-                  <div class="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
-                    <span class="">{center.center}</span>
+              <div className="flex gap-2">
+                {(crop.centers && Object.values(crop.centers) || []).map((center, index) => (
+                  <div className="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white" key={index}>
+                    <span>{center.center}</span>
                   </div>
                 ))}
               </div>
-              <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
-              <Link to={`/blog/${crop.id}/fruit`} className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+              <div
+                className="blog-description"
+                dangerouslySetInnerHTML={{
+                  __html: (crop.description || '').slice(0, 100) + '...'
+                }}
+              />
+              <Link
+                to={`/blog/${crop.id}/fruit`}
+                className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              >
                 Read More
               </Link>
             </div>
@@ -136,15 +144,23 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
               <img src={crop.image_url} alt={crop.title} className="blog-image" />
               <h3>{crop.title}</h3>
               <p className="created-date-str">Posted on {crop.created_at}</p>
-              <div class="flex gap-2">
-                {(Object.values(crop.centers) || []).map((center, index) => (
-                  <div class="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white">
-                    <span class="">{center.center}</span>
+              <div className="flex gap-2">
+                {(crop.centers && Object.values(crop.centers) || []).map((center, index) => (
+                  <div className="relative grid select-none items-center whitespace-nowrap rounded-full bg-gray-400 py-1.5 px-3 font-sans text-xs font-bold uppercase text-white" key={index}>
+                    <span>{center.center}</span>
                   </div>
                 ))}
               </div>
-              <div className="blog-description" dangerouslySetInnerHTML={{ __html: crop.description.slice(0, 100) + '...' }} />
-              <Link to={`/blog/${crop.id}/paddy`} className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+              <div
+                className="blog-description"
+                dangerouslySetInnerHTML={{
+                  __html: (crop.description || '').slice(0, 100) + '...'
+                }}
+              />
+              <Link
+                to={`/blog/${crop.id}/paddy`}
+                className="read-more-btn text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              >
                 Read More
               </Link>
             </div>

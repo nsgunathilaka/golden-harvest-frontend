@@ -6,20 +6,24 @@
   width: 100%;
   top: 0;
   left: 0;
+  display: flex;
+  gap: 16px;
   z-index: 1000;
 }
 
 .App-header h1 {
-  margin: 0;
-  font-size: 2em;
-  text-align: left;
+    margin: 0;
+    font-size: 2em;
+    text-align: left;
+    top: 12px;
+    position: relative;
 }
 
 .message-box {
     position: absolute;
     right: 25px;
-    top: 28px;
     cursor: pointer;
+    top: 45px;
 }
 
 .message-box .fa-envelope {
@@ -137,4 +141,44 @@ i.fa-solid.fa-xmark {
 small {
     font-size: 80%;
     color: #898282;
+}
+
+.logo-container .logo {
+    height: 77px;
+    width: auto;
+    border-radius: 50px;
+}
+
+/* Navigation menu styles */
+.nav-menu {
+    margin-left: auto;
+    margin-right: 20px;
+    top: 24px;
+    position: relative;
+    right: 27px;
+}
+
+.nav-menu ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-menu li {
+  margin: 0 15px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #33691E;
+  font-weight: bold;
+}
+
+.nav-menu a:hover {
+  color: #007BFF; /* Change color on hover */
+}
+
+nav ul li .active-link {
+  color: white;
 }

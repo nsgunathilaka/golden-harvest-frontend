@@ -4,7 +4,7 @@
   background-color: #F1F8E9; /* Light green for sidebar background */
   height: calc(100vh - 80px); /* Adjust for header height */
   position: fixed;
-  top: 84px;
+  top: 118px;
   left: 9px;
   overflow-y: auto;
   border-right: 1px solid #8BC34A; /* Green border */
