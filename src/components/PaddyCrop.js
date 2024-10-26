@@ -12,7 +12,7 @@ const VegetableCrop = () => {
       setLoading(true);
       setError(null);
       try {
-        const url = 'http://127.0.0.1:8000/api/api/get-all-crop/';
+        const url = 'http://34.225.2.83:8000/api/api/get-all-crop/';
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
