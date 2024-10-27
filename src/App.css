@@ -9,7 +9,6 @@
 }
 
 .main-content {
-  margin-left: 200px; /* Adjust for sidebar width */
   padding: 20px;
   flex-grow: 1;
 }
@@ -78,4 +77,160 @@ input[type="radio"] {
 .butterfly {
   animation: fly 10s linear infinite;
   opacity: 0.8;
+}
+
+.main-content.vegetable-crop-content {
+    margin-left: 0;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+
+
+
+/* General styles for the vegetable crop page */
+.vegetable-crop-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Styling the dropdown container */
+.dropdown-container {
+    display: flex;
+    flex-direction: row;
+    float: right;
+    margin-bottom: auto;
+    gap: 22px;
+}
+
+/* Dropdown label styling */
+.dropdown-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Base styles for select elements */
+select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+/* Focus and hover effects for select elements */
+select:focus {
+    border-color: #007BFF; /* Bootstrap primary color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none; /* Remove default outline */
+}
+
+/* Disabled state styling */
+select:disabled {
+    background-color: #e9ecef;
+}
+
+/* Section title styling */
+.section-title {
+    margin-top: 74px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    color: #333;
+}
+
+/* Loader styling */
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.spinner {
+    border: 5px solid #007BFF;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+/* Animation for the loader */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* No crops found banner styling */
+.no-crops-banner {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.no-crops-banner h2 {
+    font-size: 20px;
+    color: #dc3545; /* Bootstrap danger color */
+}
+
+/* Grid container for displaying crops */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* Individual crop item styling */
+.grid-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    overflow: hidden; /* Prevent overflow of content */
+}
+
+.grid-item:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+/* Crop image styling */
+.blog-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/* Additional styles for crop item text */
+.grid-item h3 {
+    margin: 10px;
+    font-size: 18px;
+    color: #007BFF; /* Bootstrap primary color */
+}
+
+.grid-item p {
+    margin: 10px;
+    color: #555;
+}
+
+/* Flexbox styles for displaying centers */
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px;
+}
+
+.grid .relative {
+    display: flex;
+    align-items: center;
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
 }

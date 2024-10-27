@@ -155,10 +155,19 @@
     position: relative;
     max-width: 368px;
     max-height: 496px;
+    cursor: pointer;
 }
+.grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 
 .grid-item h3 {
     font-size: 23px;
+    max-height: 76px;
+    min-height: 76px;
+    overflow: hidden;
 }
 
 .blog-image {

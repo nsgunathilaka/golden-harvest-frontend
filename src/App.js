@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import BlogList from './components/BlogList';
 import BlogDetails from './components/BlogDetails';
 import Sidebar from './components/Sidebar';
@@ -21,37 +21,64 @@ function App() {
       <div className="App">
         <Header />
         <div className="content">
-          <Sidebar
+          <PageWithSidebar
             selectedDistrict={selectedDistrict}
             setSelectedDistrict={setSelectedDistrict}
             selectedCenter={selectedCenter}
             setSelectedCenter={setSelectedCenter}
           />
-          <div className="main-content">
-            <CarouselBanner />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/blog/:id/:type" element={<BlogDetails blog={selectedBlog} />} />
-              <Route path="/vegetable-crop" element={<VegetableCrop />} />
-              <Route path="/paddy-crop" element={<PaddyCrop />} />
-              <Route path="/fruit-crop" element={<FruitCrop />} />
-            </Routes>
-          </div>
+          <MainContent />
         </div>
         <svg
-            className="butterfly"
-            xmlns="http://www.w3.org/2000/svg"
-            width="50"
-            height="50"
-            viewBox="0 0 50 50"
-          >
-            <path
-              fill="yellow"
-              d="M25 0C11.193 0 0 11.193 0 25s11.193 25 25 25 25-11.193 25-25S38.807 0 25 0zm0 46c-11.046 0-20-8.954-20-20S13.954 6 25 6s20 8.954 20 20-8.954 20-20 20z"
-            />
-          </svg>
+          className="butterfly"
+          xmlns="http://www.w3.org/2000/svg"
+          width="50"
+          height="50"
+          viewBox="0 0 50 50"
+        >
+          <path
+            fill="yellow"
+            d="M25 0C11.193 0 0 11.193 0 25s11.193 25 25 25 25-11.193 25-25S38.807 0 25 0zm0 46c-11.046 0-20-8.954-20-20S13.954 6 25 6s20 8.954 20 20-8.954 20-20 20z"
+          />
+        </svg>
       </div>
     </Router>
+  );
+}
+
+function PageWithSidebar({ selectedDistrict, setSelectedDistrict, selectedCenter, setSelectedCenter }) {
+  const location = useLocation();
+  const showSidebar = false;
+
+  return (
+    <>
+      {showSidebar && (
+        <Sidebar
+          selectedDistrict={selectedDistrict}
+          setSelectedDistrict={setSelectedDistrict}
+          selectedCenter={selectedCenter}
+          setSelectedCenter={setSelectedCenter}
+        />
+      )}
+    </>
+  );
+}
+
+function MainContent() {
+  const location = useLocation();
+  const showSidebarClass = ['/vegetable-crop', '/paddy-crop', '/fruit-crop'].includes(location.pathname);
+
+  return (
+    <div className={`main-content ${showSidebarClass ? 'vegetable-crop-content' : ''}`}>
+      <CarouselBanner />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blog/:id/:type" element={<BlogDetails />} />
+        <Route path="/vegetable-crop" element={<VegetableCrop />} />
+        <Route path="/paddy-crop" element={<PaddyCrop />} />
+        <Route path="/fruit-crop" element={<FruitCrop />} />
+      </Routes>
+    </div>
   );
 }
 

@@ -3,11 +3,13 @@ import './Sidebar.css';
 
 const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSelectedCenter }) => {
   const [districts, setDistricts] = useState([]);
+  const [centerData, setCenterData] = useState([]); // State for center data
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [loading, setLoading] = useState(true); // State for loading
   const contentRef = useRef(null);
 
+  // Fetching districts on component mount
   useEffect(() => {
     const fetchDistricts = async () => {
       setLoading(true); // Set loading to true before fetching
@@ -30,46 +32,81 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
     fetchDistricts();
   }, []);
 
+  // Fetching center data when a district is selected
+  useEffect(() => {
+    const fetchCenterData = async () => {
+      if (selectedDistrict) {
+        setLoading(true);
+        setError(null);
+        try {
+          let  url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setCenterData(data.center_list); // Assuming the API returns center_list
+        } catch (error) {
+          console.error('Error fetching center data:', error);
+          setError(error.toString());
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchCenterData();
+  }, [selectedDistrict]); // Dependency array
+
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
   const handleDistrictChange = (districtId) => {
     setSelectedDistrict(districtId);
-    setSelectedCenter(null); // Reset center selection when changing district
+    setSelectedCenter(null);
   };
 
-  const handleCenterChange = (centerName) => {
+  const handleCenterChange = async (centerName) => {
     setSelectedCenter(centerName);
+    // Fetching data related to the selected center
+    try {
+      let  url = `http://127.0.0.1:8000/api/api/district-data/${centerName}/`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data); // Do something with the center data
+    } catch (error) {
+      console.error('Error fetching center data:', error);
+    }
   };
 
   if (loading) {
-    return <div className="loader">Loading districts...</div>; // Loader while fetching districts
+    return <div className="loader">Loading districts...</div>;
   }
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  const getCentersForDistrict = (districtId) => {
-    const district = districts.find(d => d.id === districtId);
-    return district ? district.center_list : [];
-  };
-
   return (
-    <div className="sidebar">
-      <h2 onClick={toggleExpand} className="expandable-header">
-        Districts {isExpanded ? '▲' : '▼'}
-      </h2>
-      <div
-        className="expandable-content"
-        ref={contentRef}
-        style={{
-          maxHeight: isExpanded ? `${contentRef.current.scrollHeight}px` : '0px',
-        }}
-      >
-        <form>
-          {districts.map(district => (
+  <div className="sidebar">
+    <h2 onClick={toggleExpand} className="expandable-header">
+      Districts {isExpanded ? '▲' : '▼'}
+    </h2>
+    <div
+      className="expandable-content"
+      ref={contentRef}
+      style={{
+        maxHeight: isExpanded ? (contentRef.current ? `${contentRef.current.scrollHeight}px` : 'auto') : '0px',
+        overflow: 'hidden',
+      }}
+    >
+      <form>
+        {Array.isArray(districts) && districts.length > 0 ? (
+          districts.map(district => (
             <div key={district.id}>
               <input
                 type="radio"
@@ -81,9 +118,9 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
               />
               <label htmlFor={district.id}>{district.district}</label>
 
-              {selectedDistrict === district.id && district.center_list.length > 0 && (
+              {selectedDistrict === district.id && Array.isArray(centerData) && centerData.length > 0 && (
                 <div className="center-list">
-                  {district.center_list.map(center => (
+                  {centerData.map(center => (
                     <div key={center.name}>
                       <input
                         type="radio"
@@ -99,11 +136,16 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
                 </div>
               )}
             </div>
-          ))}
-        </form>
-      </div>
+          ))
+        ) : (
+          <div>No districts available.</div>
+        )}
+      </form>
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default Sidebar;
