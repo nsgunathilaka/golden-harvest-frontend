@@ -45,7 +45,7 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
 
   const handleShowMore = async (cropId, environment) => {
     try {
-      var url = 'http://18.234.244.113:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
+      var url = 'http://127.0.0.1:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
