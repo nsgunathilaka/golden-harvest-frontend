@@ -17,11 +17,11 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
       try {
         let url;
         if (selectedCenter) {
-          url = `http://127.0.0.1:8000/api/api/get-centers-crop/${selectedCenter}/`;
+          url = `http://34.225.2.83:8000/api/api/get-centers-crop/${selectedCenter}/`;
         } else if (selectedDistrict) {
-          url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/`;
+          url = `http://34.225.2.83:8000/api/api/district-data/${selectedDistrict}/`;
         } else {
-          url = 'http://127.0.0.1:8000/api/api/get-all-crop/';
+          url = 'http://34.225.2.83:8000/api/api/get-all-crop/';
         }
 
         const response = await fetch(url);
@@ -45,7 +45,7 @@ const BlogList = ({ selectedDistrict, selectedCenter, setSelectedBlog }) => {
 
   const handleShowMore = async (cropId, environment) => {
     try {
-      var url = 'http://127.0.0.1:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
+      var url = 'http://34.225.2.83:8000/api/api/crop-details/'+cropId+'/'+environment+'/'
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

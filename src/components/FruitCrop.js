@@ -18,7 +18,7 @@ const VegetableCrop = () => {
       setLoading(true);
       setError(null);
       try {
-        const url = 'http://127.0.0.1:8000/api/api/get-all-crop/';
+        const url = 'http://34.225.2.83:8000/api/api/get-all-crop/';
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -39,7 +39,7 @@ const VegetableCrop = () => {
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/api/districtlist/');
+        const response = await fetch('http://34.225.2.83:8000/api/api/districtlist/');
         const data = await response.json();
         console.log('Districts:', data);
         setDistricts(data || []);
@@ -56,7 +56,7 @@ const VegetableCrop = () => {
     if (selectedDistrict) {
       const fetchDistrictData = async () => {
         try {
-          let  url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/fruit-crop/`;
+          let  url = `http://34.225.2.83:8000/api/api/district-data/${selectedDistrict}/fruit-crop/`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -90,7 +90,7 @@ const VegetableCrop = () => {
     if (selectedCenter) {
       const fetchCenterCropData = async () => {
         try {
-          let  url = `http://127.0.0.1:8000/api/get-centers-crop/${selectedCenter}/fruit-crop/`;
+          let  url = `http://34.225.2.83:8000/api/get-centers-crop/${selectedCenter}/fruit-crop/`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
