@@ -15,7 +15,7 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
       setLoading(true); // Set loading to true before fetching
       setError(null); // Reset the error state
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/api/districtlist/');
+        const response = await fetch('http://34.225.2.83:8000/api/api/districtlist/');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -39,7 +39,7 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
         setLoading(true);
         setError(null);
         try {
-          let  url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/`;
+          let  url = `http://34.225.2.83:8000/api/api/district-data/${selectedDistrict}/`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -71,7 +71,7 @@ const Sidebar = ({ selectedDistrict, setSelectedDistrict, selectedCenter, setSel
     setSelectedCenter(centerName);
     // Fetching data related to the selected center
     try {
-      let  url = `http://127.0.0.1:8000/api/api/district-data/${centerName}/`;
+      let  url = `http://34.225.2.83:8000/api/api/district-data/${centerName}/`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

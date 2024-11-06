@@ -19,7 +19,7 @@ const PaddyCrop = () => {
       setLoading(true);
       setError(null);
       try {
-        const url = 'http://127.0.0.1:8000/api/api/get-all-crop/';
+        const url = 'http://34.225.2.83:8000/api/api/get-all-crop/';
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -41,7 +41,7 @@ const PaddyCrop = () => {
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/api/districtlist/');
+        const response = await fetch('http://34.225.2.83:8000/api/api/districtlist/');
         const data = await response.json();
         setDistricts(data || []);
       } catch (error) {
@@ -58,7 +58,7 @@ const PaddyCrop = () => {
       const fetchDistrictData = async () => {
         setLoading(true);
         try {
-          const url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/paddy-crop/`;
+          const url = `http://34.225.2.83:8000/api/api/district-data/${selectedDistrict}/paddy-crop/`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -102,7 +102,7 @@ const PaddyCrop = () => {
       const fetchCenterCropData = async () => {
         setLoading(true);
         try {
-          const url = `http://127.0.0.1:8000/api/api/get-centers-crop/${selectedCenter}/paddy-crop`;
+          const url = `http://34.225.2.83:8000/api/api/get-centers-crop/${selectedCenter}/paddy-crop`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

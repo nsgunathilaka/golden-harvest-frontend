@@ -13,7 +13,7 @@ const BlogDetails = () => {
       setLoading(true);
       setError(null);
       try {
-        var url = 'http://127.0.0.1:8000/api/api/crop-details/'+id+'/'+type+'/'
+        var url = 'http://34.225.2.83:8000/api/api/crop-details/'+id+'/'+type+'/'
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
