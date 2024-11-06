@@ -29,18 +29,6 @@ function App() {
           />
           <MainContent />
         </div>
-        <svg
-          className="butterfly"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50"
-          height="50"
-          viewBox="0 0 50 50"
-        >
-          <path
-            fill="yellow"
-            d="M25 0C11.193 0 0 11.193 0 25s11.193 25 25 25 25-11.193 25-25S38.807 0 25 0zm0 46c-11.046 0-20-8.954-20-20S13.954 6 25 6s20 8.954 20 20-8.954 20-20 20z"
-          />
-        </svg>
       </div>
     </Router>
   );

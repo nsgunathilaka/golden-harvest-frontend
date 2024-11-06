@@ -3,7 +3,7 @@ import './BlogList.css';
 import { Link } from 'react-router-dom';
 
 const VegetableCrop = () => {
-  const [fruitCrops, setFruitCrops] = useState([]);
+  const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,8 +11,8 @@ const VegetableCrop = () => {
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [serviceCenters, setServiceCenters] = useState([]);
   const [selectedCenter, setSelectedCenter] = useState('');
-  const [districtData, setDistrictData] = useState(null);
 
+  // Fetch fruit crops initially
   useEffect(() => {
     const fetchFruitCrops = async () => {
       setLoading(true);
@@ -24,7 +24,7 @@ const VegetableCrop = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setFruitCrops(data.fruit_crops || []);
+        setCrops(data.fruit_crops || []);
       } catch (error) {
         console.error('Error fetching fruit crops:', error.message);
         setError(error.message);
@@ -36,12 +36,12 @@ const VegetableCrop = () => {
     fetchFruitCrops();
   }, []);
 
+  // Fetch districts on load
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
         const response = await fetch('http://127.0.0.1:8000/api/api/districtlist/');
         const data = await response.json();
-        console.log('Districts:', data);
         setDistricts(data || []);
       } catch (error) {
         console.error('Error fetching districts:', error);
@@ -51,54 +51,60 @@ const VegetableCrop = () => {
     fetchDistricts();
   }, []);
 
+  // Fetch crops based on district selection
   useEffect(() => {
-    // When a district is selected, fetch district-specific data
     if (selectedDistrict) {
       const fetchDistrictData = async () => {
+        setLoading(true);
         try {
-          let  url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/fruit-crop/`;
+          const url = `http://127.0.0.1:8000/api/api/district-data/${selectedDistrict}/fruit-crop/`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          setDistrictData(data); // Store the district-specific data
+          setCrops(data.crop_datas_list || []); // Update with district-specific data
         } catch (error) {
           console.error('Error fetching district data:', error.message);
+          setCrops([]); // Clear crops on error
+        } finally {
+          setLoading(false);
         }
       };
 
       fetchDistrictData();
-    } else {
-      setDistrictData(null); // Reset if no district is selected
     }
   }, [selectedDistrict]);
 
+  // Update service centers based on the selected district
   useEffect(() => {
-    // When a district is selected, update the service centers
-    const district = districts.find(d => d.id === selectedDistrict);
-    if (district) {
-      setServiceCenters(district.center_list || []);
-      setSelectedCenter(''); // Reset selected center when district changes
-    } else {
-      setServiceCenters([]); // Reset if district not found
+    if (selectedDistrict) {
+      const district = districts.find(d => d.id === selectedDistrict);
+      if (district) {
+        setServiceCenters(district.center_list || []);
+        setSelectedCenter(''); // Reset selected center when district changes
+      }
     }
   }, [selectedDistrict, districts]);
 
+  // Fetch data for a selected service center
   useEffect(() => {
-    // When a service center is selected, fetch related crop data
     if (selectedCenter) {
       const fetchCenterCropData = async () => {
+        setLoading(true);
         try {
-          let  url = `http://127.0.0.1:8000/api/get-centers-crop/${selectedCenter}/fruit-crop/`;
+          const url = `http://127.0.0.1:8000/api/api/get-centers-crop/${selectedCenter}/fruit-crop`;
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.json();
-          console.log('Center Crop Data:', data); // Process this data as needed
+          setCrops(data.crop_datas_list || []); // Update crops with service center data
         } catch (error) {
           console.error('Error fetching center crop data:', error.message);
+          setCrops([]); // Clear crops on error
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -106,15 +112,17 @@ const VegetableCrop = () => {
     }
   }, [selectedCenter]);
 
+  // Handle loading state
   if (loading) {
     return (
       <div className="loader">
         <div className="spinner"></div>
-        <p>Loading fruit crops...</p>
+        <p>Loading Fruit crops...</p>
       </div>
     );
   }
 
+  // Handle error state
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -122,6 +130,7 @@ const VegetableCrop = () => {
   return (
     <div className="vegetable-crop-page">
       <div className="dropdown-container">
+        {/* District Select */}
         <select
           id="district-select"
           value={selectedDistrict}
@@ -132,6 +141,8 @@ const VegetableCrop = () => {
             <option key={district.id} value={district.id}>{district.district}</option>
           ))}
         </select>
+
+        {/* Service Center Select */}
         <select
           id="center-select"
           value={selectedCenter}
@@ -150,15 +161,16 @@ const VegetableCrop = () => {
       </div>
 
       <h2 className="section-title text-center">Fruit Crop Information</h2>
-      {fruitCrops.length === 0 ? (
+      {/* Display message if no crops */}
+      {crops.length === 0 ? (
         <div className="no-crops-banner">
-          <h2>No Fruit Crops Found</h2>
-          <p>Sorry, there are no fruit crops available at the moment.</p>
+          <h2>No Data Found</h2>
+          <p>Sorry, there is no fruit crop data available for this district or service center.</p>
         </div>
       ) : (
         <div className="grid-container">
-          {fruitCrops.map((crop) => (
-            <Link to={`/blog/${crop.id}/fruit`} key={crop.id}>
+          {crops.map((crop) => (
+            <Link to={`/blog/${crop.id}/vege`} key={crop.id}>
               <div className="grid-item">
                 <img src={crop.image_url} alt={crop.title} className="blog-image" />
                 <h3>{crop.title}</h3>
