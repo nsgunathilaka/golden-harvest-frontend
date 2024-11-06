@@ -170,7 +170,7 @@ const VegetableCrop = () => {
       ) : (
         <div className="grid-container">
           {crops.map((crop) => (
-            <Link to={`/blog/${crop.id}/vege`} key={crop.id}>
+            <Link to={`/blog/${crop.id}/fruit`} key={crop.id}>
               <div className="grid-item">
                 <img src={crop.image_url} alt={crop.title} className="blog-image" />
                 <h3>{crop.title}</h3>
